@@ -1,5 +1,18 @@
 // Tools JavaScript - Text, Unit, Color, QR, Image tools
 
+// Switch between main tabs (PDF, Tools)
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.getElementById(tabName).classList.add('active');
+
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.nav-item').classList.add('active');
+}
+
 // Switch between tools
 function switchTool(toolName) {
     document.querySelectorAll('.pdf-tool').forEach(tool => {
