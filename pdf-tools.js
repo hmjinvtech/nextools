@@ -316,3 +316,75 @@ function downloadPDF(bytes, filename) {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 }
+
+// ===== PDF ANALYZER =====
+async function analyzePDF(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+        // Get file size
+        const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+        
+        // Load PDF with pdf.js
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const pageCount = pdfDoc.numPages;
+        
+        // Extract text from all pages
+        let fullText = '';
+        for (let i = 1; i <= pageCount; i++) {
+            const page = await pdfDoc.getPage(i);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(' ');
+            fullText += pageText + '\n';
+        }
+        
+        // Calculate statistics
+        const words = fullText.trim().split(/\s+/).length;
+        const characters = fullText.length;
+        
+        // Display results
+        document.getElementById('pdfPages').textContent = pageCount;
+        document.getElementById('pdfSize').textContent = fileSize + ' MB';
+        document.getElementById('pdfWords').textContent = words;
+        document.getElementById('pdfChars').textContent = characters;
+        document.getElementById('extractedText').value = fullText;
+        document.getElementById('analyzerStats').style.display = 'block';
+        
+    } catch (error) {
+        alert('Error analyzing PDF: ' + error.message);
+    }
+}
+
+function copyExtractedText() {
+    const text = document.getElementById('extractedText').value;
+    if (!text) {
+        alert('No text to copy');
+        return;
+    }
+    
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Text copied to clipboard!');
+    }).catch(err => {
+        alert('Error copying text: ' + err);
+    });
+}
+
+function downloadExtractedText() {
+    const text = document.getElementById('extractedText').value;
+    if (!text) {
+        alert('No text to download');
+        return;
+    }
+    
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'extracted_text.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}

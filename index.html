@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <title>NexTools - Free Calculator, PDF Editor, QR Generator & More</title>
-    <meta name="description" content="NexTools: Free online calculator (scientific), PDF editor, text tools, unit converter, color tools, QR generator, and image compressor. No signup needed, 100% free.">
-    <meta name="keywords" content="calculator, PDF editor, QR code generator, color converter, unit converter, text tools, image compressor, free tools online">
+    <title>NexTools - Free PDF Editor, PDF Analyzer, QR Generator & More</title>
+    <meta name="description" content="NexTools: Free online PDF editor, PDF analyzer, text tools, unit converter, color tools, QR generator, and image compressor. No signup needed, 100% free.">
+    <meta name="keywords" content="PDF editor, PDF analyzer, QR code generator, color converter, unit converter, text tools, image compressor, free tools online">
     <meta name="author" content="NexTools">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph Tags (for social sharing) -->
-    <meta property="og:title" content="NexTools - Free All-In-One Tools">
-    <meta property="og:description" content="Calculator, PDF Editor, QR Generator, Color Tools, Unit Converter, Text Tools, Image Compressor - All Free!">
+    <meta property="og:title" content="NexTools - Free PDF & Utility Tools">
+    <meta property="og:description" content="PDF Editor, PDF Analyzer, QR Generator, Color Tools, Unit Converter, Text Tools, Image Compressor - All Free!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hmjinvtech.github.io/nextools">
     
@@ -35,11 +35,7 @@
                 <h1 class="app-title">🔧 NexTools</h1>
             </div>
             <nav class="header-nav">
-                <button class="nav-item active" onclick="switchTab('calculator')">
-                    <span class="icon">🧮</span>
-                    <span>Calculator</span>
-                </button>
-                <button class="nav-item" onclick="switchTab('pdf')">
+                <button class="nav-item active" onclick="switchTab('pdf')">
                     <span class="icon">📄</span>
                     <span>PDF Tools</span>
                 </button>
@@ -55,100 +51,14 @@
 
         <!-- Main Content -->
         <main class="content">
-            <!-- Calculator Tab -->
-            <section id="calculator" class="tab-content active">
-                <div class="calculator-container">
-                    <h1>Scientific Calculator</h1>
-                    
-                    <div class="mode-toggle">
-                        <button class="toggle-btn active" id="basicBtn" onclick="showBasic()">Basic</button>
-                        <button class="toggle-btn" id="scientificBtn" onclick="showScientific()">Scientific</button>
-                    </div>
-                    
-                    <input type="text" id="display" class="display" readonly value="0">
-                    <div class="mode-indicator" id="modeIndicator"></div>
-                    
-                    <!-- Scientific Functions -->
-                    <div id="scientificPanel" style="display: none;">
-                        <div class="scientific-section">
-                            <div class="row">
-                                <button class="btn func" onclick="toggleDegRad()" id="degRadBtn">DEG</button>
-                                <button class="btn func" onclick="appendFunction('sin')">sin</button>
-                                <button class="btn func" onclick="appendFunction('cos')">cos</button>
-                                <button class="btn func" onclick="appendFunction('tan')">tan</button>
-                            </div>
-                            <div class="row">
-                                <button class="btn func" onclick="appendFunction('asin')">asin</button>
-                                <button class="btn func" onclick="appendFunction('acos')">acos</button>
-                                <button class="btn func" onclick="appendFunction('atan')">atan</button>
-                                <button class="btn func" onclick="appendFunction('log')">log</button>
-                            </div>
-                            <div class="row">
-                                <button class="btn func" onclick="appendFunction('ln')">ln</button>
-                                <button class="btn func" onclick="appendFunction('sqrt')">√</button>
-                                <button class="btn func" onclick="appendFunction('cbrt')">∛</button>
-                                <button class="btn func" onclick="appendFunction('!')">x!</button>
-                            </div>
-                            <div class="row">
-                                <button class="btn const" onclick="appendConstant('pi')">π</button>
-                                <button class="btn const" onclick="appendConstant('e')">e</button>
-                                <button class="btn func" onclick="appendOperator('^')">x^y</button>
-                                <button class="btn func" onclick="toggleSign()">±</button>
-                            </div>
-                            <div class="row">
-                                <button class="btn memory" onclick="memoryClear()">MC</button>
-                                <button class="btn memory" onclick="memoryRecall()">MR</button>
-                                <button class="btn memory" onclick="memoryAdd()">M+</button>
-                                <button class="btn memory" onclick="memorySub()">M-</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Calculator Buttons -->
-                    <div class="buttons">
-                        <div class="row">
-                            <button class="btn clear" onclick="clearDisplay()">C</button>
-                            <button class="btn delete" onclick="deleteLast()">DEL</button>
-                            <button class="btn operator" onclick="appendOperator('/')">÷</button>
-                            <button class="btn operator" onclick="appendOperator('*')">×</button>
-                        </div>
-                        
-                        <div class="row">
-                            <button class="btn number" onclick="appendNumber('7')">7</button>
-                            <button class="btn number" onclick="appendNumber('8')">8</button>
-                            <button class="btn number" onclick="appendNumber('9')">9</button>
-                            <button class="btn operator" onclick="appendOperator('-')">−</button>
-                        </div>
-                        
-                        <div class="row">
-                            <button class="btn number" onclick="appendNumber('4')">4</button>
-                            <button class="btn number" onclick="appendNumber('5')">5</button>
-                            <button class="btn number" onclick="appendNumber('6')">6</button>
-                            <button class="btn operator" onclick="appendOperator('+')">+</button>
-                        </div>
-                        
-                        <div class="row">
-                            <button class="btn number" onclick="appendNumber('1')">1</button>
-                            <button class="btn number" onclick="appendNumber('2')">2</button>
-                            <button class="btn number" onclick="appendNumber('3')">3</button>
-                            <button class="btn equals" onclick="calculate()" style="grid-row: span 2;">=</button>
-                        </div>
-                        
-                        <div class="row">
-                            <button class="btn number" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
-                            <button class="btn number" onclick="appendNumber('.')">.</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- PDF Tools Tab -->
-            <section id="pdf" class="tab-content">
+            <section id="pdf" class="tab-content active">
                 <div class="pdf-container">
                     <h1>PDF Tools</h1>
                     
                     <div class="tool-tabs">
                         <button class="tool-tab active" onclick="switchPdfTool('viewer')">📖 Viewer</button>
+                        <button class="tool-tab" onclick="switchPdfTool('analyzer')">🔎 Analyzer</button>
                         <button class="tool-tab" onclick="switchPdfTool('merge')">🔗 Merge</button>
                         <button class="tool-tab" onclick="switchPdfTool('image-to-pdf')">🖼️ Image to PDF</button>
                         <button class="tool-tab" onclick="switchPdfTool('rotate')">🔄 Rotate</button>
@@ -164,6 +74,30 @@
                             <button onclick="prevPage()">← Previous</button>
                             <span id="pageInfo"></span>
                             <button onclick="nextPage()">Next →</button>
+                        </div>
+                    </div>
+
+                    <!-- PDF Analyzer -->
+                    <div id="analyzer-tool" class="pdf-tool">
+                        <h3>PDF Analyzer</h3>
+                        <input type="file" id="analyzerFile" accept=".pdf" onchange="analyzePDF(event)">
+                        <div id="analyzerStats" style="display:none; background: #0a0a0a; padding: 15px; border-radius: 8px; border: 1px solid #2a2219; color: #d4a574; margin-top: 15px;">
+                            <div style="margin-bottom: 15px;">
+                                <div style="font-weight: 600; margin-bottom: 10px;">📊 Document Statistics:</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div><strong>Pages:</strong> <span id="pdfPages">0</span></div>
+                                    <div><strong>File Size:</strong> <span id="pdfSize">0 MB</span></div>
+                                    <div><strong>Words:</strong> <span id="pdfWords">0</span></div>
+                                    <div><strong>Characters:</strong> <span id="pdfChars">0</span></div>
+                                </div>
+                            </div>
+                            <hr style="border: 1px solid #2a2219; margin: 15px 0;">
+                            <div style="margin-top: 15px;">
+                                <div style="font-weight: 600; margin-bottom: 10px;">📄 Extracted Text:</div>
+                                <textarea id="extractedText" readonly style="width: 100%; height: 200px; padding: 12px; background: #1a1410; border: 1px solid #2a2219; border-radius: 8px; color: #d4a574; resize: vertical;"></textarea>
+                                <button class="action-btn" onclick="copyExtractedText()" style="width: 100%; margin-top: 10px;">📋 Copy Text</button>
+                                <button class="action-btn" onclick="downloadExtractedText()" style="width: 100%; margin-top: 10px;">⬇️ Download Text</button>
+                            </div>
                         </div>
                     </div>
 
@@ -342,7 +276,6 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="calculator.js"></script>
     <script src="pdf-tools.js"></script>
     <script src="tools.js"></script>
 </body>
