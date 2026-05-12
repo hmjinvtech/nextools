@@ -388,3 +388,92 @@ function downloadExtractedText() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 }
+
+// ===== PDF SPLITTER =====
+let splitPdfDoc = null;
+let splitPageCount = 0;
+
+async function loadSplitPDF(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        splitPdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        splitPageCount = splitPdfDoc.getPageCount();
+        
+        document.getElementById('splitterPageCount').textContent = splitPageCount;
+        document.getElementById('splitterInfo').style.display = 'block';
+    } catch (error) {
+        alert('Error loading PDF: ' + error.message);
+    }
+}
+
+async function splitPDF() {
+    if (!splitPdfDoc) {
+        alert('Please upload a PDF first');
+        return;
+    }
+
+    const rangesInput = document.getElementById('pageRanges').value.trim();
+    if (!rangesInput) {
+        alert('Please enter page ranges (e.g., 1-2, 3-5, 6-10)');
+        return;
+    }
+
+    try {
+        // Parse ranges
+        const ranges = rangesInput.split(',').map(r => r.trim());
+        const validRanges = [];
+
+        for (const range of ranges) {
+            if (range.includes('-')) {
+                const [start, end] = range.split('-').map(x => parseInt(x.trim()));
+                if (isNaN(start) || isNaN(end)) {
+                    alert(`Invalid range: ${range}`);
+                    return;
+                }
+                if (start < 1 || end > splitPageCount || start > end) {
+                    alert(`Invalid range: ${range}. Pages must be between 1 and ${splitPageCount}`);
+                    return;
+                }
+                validRanges.push({ start: start - 1, end: end - 1, label: `pages_${start}-${end}` });
+            } else {
+                const page = parseInt(range);
+                if (isNaN(page) || page < 1 || page > splitPageCount) {
+                    alert(`Invalid page number: ${page}. Must be between 1 and ${splitPageCount}`);
+                    return;
+                }
+                validRanges.push({ start: page - 1, end: page - 1, label: `page_${page}` });
+            }
+        }
+
+        // Create PDFs for each range
+        for (let i = 0; i < validRanges.length; i++) {
+            const range = validRanges[i];
+            const newPdf = await PDFLib.PDFDocument.create();
+            
+            // Create array of page indices to copy
+            const pageIndices = [];
+            for (let pageNum = range.start; pageNum <= range.end; pageNum++) {
+                pageIndices.push(pageNum);
+            }
+            
+            // Copy pages using copyPages method
+            const copiedPages = await newPdf.copyPages(splitPdfDoc, pageIndices);
+            copiedPages.forEach((page) => newPdf.addPage(page));
+
+            const pdfBytes = await newPdf.save();
+            downloadPDF(pdfBytes, `split_${range.label}.pdf`);
+            
+            // Small delay between downloads
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+
+        alert(`✅ ${validRanges.length} PDF(s) created and downloading!`);
+        document.getElementById('splitterFile').value = '';
+        document.getElementById('pageRanges').value = '';
+    } catch (error) {
+        alert('Error splitting PDF: ' + error.message);
+    }
+}

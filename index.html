@@ -59,6 +59,7 @@
                     <div class="tool-tabs">
                         <button class="tool-tab active" onclick="switchPdfTool('viewer')">📖 Viewer</button>
                         <button class="tool-tab" onclick="switchPdfTool('analyzer')">🔎 Analyzer</button>
+                        <button class="tool-tab" onclick="switchPdfTool('splitter')">✂️ Splitter</button>
                         <button class="tool-tab" onclick="switchPdfTool('merge')">🔗 Merge</button>
                         <button class="tool-tab" onclick="switchPdfTool('image-to-pdf')">🖼️ Image to PDF</button>
                         <button class="tool-tab" onclick="switchPdfTool('rotate')">🔄 Rotate</button>
@@ -98,6 +99,22 @@
                                 <button class="action-btn" onclick="copyExtractedText()" style="width: 100%; margin-top: 10px;">📋 Copy Text</button>
                                 <button class="action-btn" onclick="downloadExtractedText()" style="width: 100%; margin-top: 10px;">⬇️ Download Text</button>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- PDF Splitter -->
+                    <div id="splitter-tool" class="pdf-tool">
+                        <h3>Split PDF</h3>
+                        <p style="color: #8b7355; font-size: 12px; margin-bottom: 15px;">Upload a PDF and specify page ranges to split. Example: 1-2, 3-5, 6-10</p>
+                        <input type="file" id="splitterFile" accept=".pdf" onchange="loadSplitPDF(event)" style="margin-bottom: 15px;">
+                        <div id="splitterInfo" style="display:none; background: #1a1410; padding: 12px; border: 1px solid #2a2219; border-radius: 8px; color: #d4a574; margin-bottom: 15px; font-size: 14px;">
+                            Total Pages: <strong id="splitterPageCount">0</strong>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; color: #d4a574;">Page Ranges (comma-separated):</label>
+                            <input type="text" id="pageRanges" placeholder="e.g., 1-2, 3-5, 6-10" style="width: 100%; padding: 10px; background: #0a0a0a; border: 1px solid #2a2219; border-radius: 8px; color: #d4a574; margin-bottom: 15px;">
+                            <small style="color: #8b7355; display: block; margin-bottom: 15px;">Each range creates a separate PDF file</small>
+                            <button class="action-btn" onclick="splitPDF()" style="width: 100%;">Split & Download PDFs</button>
                         </div>
                     </div>
 
