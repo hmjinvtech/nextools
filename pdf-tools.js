@@ -1,5 +1,10 @@
 const { PDFDocument, PDFPage, rgb } = PDFLib;
 
+// Set up pdf.js worker
+if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
 // PDF Tool Switching
 function switchPdfTool(toolName) {
     document.querySelectorAll('.pdf-tool').forEach(tool => {
@@ -14,47 +19,54 @@ function switchPdfTool(toolName) {
 }
 
 // ===== PDF VIEWER =====
-let pdfDoc = null;
+let pdfDocViewer = null;
 let currentPage = 1;
 
 async function loadPDF(event) {
     const file = event.target.files[0];
     if (!file) return;
 
-    const arrayBuffer = await file.arrayBuffer();
-    pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-    currentPage = 1;
-    displayPDFPage();
-
-    document.getElementById('pdfControls').style.display = 'flex';
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        pdfDocViewer = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        currentPage = 1;
+        await displayPDFPage();
+        document.getElementById('pdfControls').style.display = 'flex';
+    } catch (error) {
+        alert('Error loading PDF: ' + error.message);
+    }
 }
 
 async function displayPDFPage() {
-    if (!pdfDoc) return;
+    if (!pdfDocViewer) return;
     
-    const page = pdfDoc.getPage(currentPage - 1);
-    const { width, height } = page.getSize();
-    
-    const canvas = document.createElement('canvas');
-    const scale = 2;
-    canvas.width = width * scale;
-    canvas.height = height * scale;
-    
-    const ctx = canvas.getContext('2d');
-    ctx.scale(scale, scale);
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, width, height);
-    
-    const preview = document.getElementById('pdfPreview');
-    preview.innerHTML = '';
-    preview.appendChild(canvas);
-    
-    document.getElementById('pageInfo').textContent = 
-        `Page ${currentPage} of ${pdfDoc.getPageCount()}`;
+    try {
+        const page = await pdfDocViewer.getPage(currentPage);
+        const viewport = page.getViewport({ scale: 2 });
+        
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
+        
+        const preview = document.getElementById('pdfPreview');
+        preview.innerHTML = '';
+        preview.appendChild(canvas);
+        
+        document.getElementById('pageInfo').textContent = 
+            `Page ${currentPage} of ${pdfDocViewer.numPages}`;
+    } catch (error) {
+        alert('Error displaying page: ' + error.message);
+    }
 }
 
 function nextPage() {
-    if (pdfDoc && currentPage < pdfDoc.getPageCount()) {
+    if (pdfDocViewer && currentPage < pdfDocViewer.numPages) {
         currentPage++;
         displayPDFPage();
     }
