@@ -2,15 +2,27 @@
 
 // Switch between main tabs (PDF, Tools)
 function switchTab(tabName) {
+    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
     });
-    document.getElementById(tabName).classList.add('active');
+    
+    // Show selected tab
+    const selectedTab = document.getElementById(tabName);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
 
+    // Update nav buttons
     document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
     });
-    event.target.closest('.nav-item').classList.add('active');
+    
+    // Find and activate the clicked button
+    const activeBtn = document.querySelector(`button[onclick="switchTab('${tabName}')"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
 }
 
 // Switch between tools
