@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>NexTools - Free Calculator, PDF Editor, QR Generator & More</title>
+    <meta name="description" content="NexTools: Free online calculator (scientific), PDF editor, text tools, unit converter, color tools, QR generator, and image compressor. No signup needed, 100% free.">
+    <meta name="keywords" content="calculator, PDF editor, QR code generator, color converter, unit converter, text tools, image compressor, free tools online">
+    <meta name="author" content="NexTools">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Tags (for social sharing) -->
+    <meta property="og:title" content="NexTools - Free All-In-One Tools">
+    <meta property="og:description" content="Calculator, PDF Editor, QR Generator, Color Tools, Unit Converter, Text Tools, Image Compressor - All Free!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hmjinvtech.github.io/nextools">
+    
+    <!-- Twitter Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NexTools - Free Online Tools">
+    <meta name="twitter:description" content="Free calculator, PDF editor, QR generator, and more tools online">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1 class="app-title">🔧 NexTools</h1>
+            </div>
+            <nav class="header-nav">
+                <button class="nav-item active" onclick="switchTab('calculator')">
+                    <span class="icon">🧮</span>
+                    <span>Calculator</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('pdf')">
+                    <span class="icon">📄</span>
+                    <span>PDF Tools</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('tools')">
+                    <span class="icon">🛠️</span>
+                    <span>Other Tools</span>
+                </button>
+            </nav>
+            <div class="header-right">
+                <p>Free • No Data Saved</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Calculator Tab -->
+            <section id="calculator" class="tab-content active">
+                <div class="calculator-container">
+                    <h1>Scientific Calculator</h1>
+                    
+                    <div class="mode-toggle">
+                        <button class="toggle-btn active" id="basicBtn" onclick="showBasic()">Basic</button>
+                        <button class="toggle-btn" id="scientificBtn" onclick="showScientific()">Scientific</button>
+                    </div>
+                    
+                    <input type="text" id="display" class="display" readonly value="0">
+                    <div class="mode-indicator" id="modeIndicator"></div>
+                    
+                    <!-- Scientific Functions -->
+                    <div id="scientificPanel" style="display: none;">
+                        <div class="scientific-section">
+                            <div class="row">
+                                <button class="btn func" onclick="toggleDegRad()" id="degRadBtn">DEG</button>
+                                <button class="btn func" onclick="appendFunction('sin')">sin</button>
+                                <button class="btn func" onclick="appendFunction('cos')">cos</button>
+                                <button class="btn func" onclick="appendFunction('tan')">tan</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn func" onclick="appendFunction('asin')">asin</button>
+                                <button class="btn func" onclick="appendFunction('acos')">acos</button>
+                                <button class="btn func" onclick="appendFunction('atan')">atan</button>
+                                <button class="btn func" onclick="appendFunction('log')">log</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn func" onclick="appendFunction('ln')">ln</button>
+                                <button class="btn func" onclick="appendFunction('sqrt')">√</button>
+                                <button class="btn func" onclick="appendFunction('cbrt')">∛</button>
+                                <button class="btn func" onclick="appendFunction('!')">x!</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn const" onclick="appendConstant('pi')">π</button>
+                                <button class="btn const" onclick="appendConstant('e')">e</button>
+                                <button class="btn func" onclick="appendOperator('^')">x^y</button>
+                                <button class="btn func" onclick="toggleSign()">±</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn memory" onclick="memoryClear()">MC</button>
+                                <button class="btn memory" onclick="memoryRecall()">MR</button>
+                                <button class="btn memory" onclick="memoryAdd()">M+</button>
+                                <button class="btn memory" onclick="memorySub()">M-</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Calculator Buttons -->
+                    <div class="buttons">
+                        <div class="row">
+                            <button class="btn clear" onclick="clearDisplay()">C</button>
+                            <button class="btn delete" onclick="deleteLast()">DEL</button>
+                            <button class="btn operator" onclick="appendOperator('/')">÷</button>
+                            <button class="btn operator" onclick="appendOperator('*')">×</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="btn number" onclick="appendNumber('7')">7</button>
+                            <button class="btn number" onclick="appendNumber('8')">8</button>
+                            <button class="btn number" onclick="appendNumber('9')">9</button>
+                            <button class="btn operator" onclick="appendOperator('-')">−</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="btn number" onclick="appendNumber('4')">4</button>
+                            <button class="btn number" onclick="appendNumber('5')">5</button>
+                            <button class="btn number" onclick="appendNumber('6')">6</button>
+                            <button class="btn operator" onclick="appendOperator('+')">+</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="btn number" onclick="appendNumber('1')">1</button>
+                            <button class="btn number" onclick="appendNumber('2')">2</button>
+                            <button class="btn number" onclick="appendNumber('3')">3</button>
+                            <button class="btn equals" onclick="calculate()" style="grid-row: span 2;">=</button>
+                        </div>
+                        
+                        <div class="row">
+                            <button class="btn number" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+                            <button class="btn number" onclick="appendNumber('.')">.</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PDF Tools Tab -->
+            <section id="pdf" class="tab-content">
+                <div class="pdf-container">
+                    <h1>PDF Tools</h1>
+                    
+                    <div class="tool-tabs">
+                        <button class="tool-tab active" onclick="switchPdfTool('viewer')">📖 Viewer</button>
+                        <button class="tool-tab" onclick="switchPdfTool('merge')">🔗 Merge</button>
+                        <button class="tool-tab" onclick="switchPdfTool('image-to-pdf')">🖼️ Image to PDF</button>
+                        <button class="tool-tab" onclick="switchPdfTool('rotate')">🔄 Rotate</button>
+                        <button class="tool-tab" onclick="switchPdfTool('delete')">❌ Delete Pages</button>
+                    </div>
+
+                    <!-- PDF Viewer -->
+                    <div id="viewer-tool" class="pdf-tool active">
+                        <h3>PDF Viewer</h3>
+                        <input type="file" id="viewerFile" accept=".pdf" onchange="loadPDF(event)">
+                        <div id="pdfPreview" class="pdf-preview"></div>
+                        <div id="pdfControls" style="display:none;" class="pdf-controls">
+                            <button onclick="prevPage()">← Previous</button>
+                            <span id="pageInfo"></span>
+                            <button onclick="nextPage()">Next →</button>
+                        </div>
+                    </div>
+
+                    <!-- Merge PDFs -->
+                    <div id="merge-tool" class="pdf-tool">
+                        <h3>Merge PDFs</h3>
+                        <div class="merge-area">
+                            <input type="file" id="mergeFiles" multiple accept=".pdf" onchange="addMergeFiles(event)">
+                            <div id="mergeList"></div>
+                            <button class="action-btn" onclick="mergePDFs()">Merge & Download</button>
+                        </div>
+                    </div>
+
+                    <!-- Image to PDF -->
+                    <div id="image-to-pdf-tool" class="pdf-tool">
+                        <h3>Image to PDF</h3>
+                        <input type="file" id="imageFiles" multiple accept="image/*" onchange="addImages(event)">
+                        <div id="imageList" class="image-list"></div>
+                        <button class="action-btn" onclick="imagesToPDF()">Create PDF</button>
+                    </div>
+
+                    <!-- Rotate PDF -->
+                    <div id="rotate-tool" class="pdf-tool">
+                        <h3>Rotate PDF Pages</h3>
+                        <input type="file" id="rotateFile" accept=".pdf" onchange="loadRotatePDF(event)">
+                        <div id="rotatePreview" class="rotate-preview"></div>
+                        <div id="rotateControls" style="display:none;" class="rotate-controls">
+                            <label>Rotation Angle:</label>
+                            <select id="rotationAngle">
+                                <option value="90">90°</option>
+                                <option value="180">180°</option>
+                                <option value="270">270°</option>
+                            </select>
+                            <button class="action-btn" onclick="applyRotation()">Apply & Download</button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Pages -->
+                    <div id="delete-tool" class="pdf-tool">
+                        <h3>Delete PDF Pages</h3>
+                        <input type="file" id="deleteFile" accept=".pdf" onchange="loadDeletePDF(event)">
+                        <div id="deletePreview" class="delete-preview"></div>
+                        <div id="deleteControls" style="display:none;" class="delete-controls">
+                            <label>Select pages to delete (comma-separated):</label>
+                            <input type="text" id="pagesToDelete" placeholder="e.g., 1,3,5">
+                            <button class="action-btn" onclick="applyDelete()">Delete & Download</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TOOLS SECTION -->
+            <section id="tools" class="tab-content">
+                <h1>🛠️ Other Tools</h1>
+                <div class="pdf-container">
+                    <div class="tool-tabs">
+                        <button class="tool-tab active" onclick="switchTool('text-tools')">📝 Text Tools</button>
+                        <button class="tool-tab" onclick="switchTool('unit-converter')">🔢 Unit Converter</button>
+                        <button class="tool-tab" onclick="switchTool('color-converter')">🎨 Color Converter</button>
+                        <button class="tool-tab" onclick="switchTool('color-identifier')">🔍 Color Identifier</button>
+                        <button class="tool-tab" onclick="switchTool('qr-generator')">📱 QR Generator</button>
+                        <button class="tool-tab" onclick="switchTool('image-compressor')">🖼️ Image Compressor</button>
+                    </div>
+
+                    <!-- Text Tools -->
+                    <div id="text-tools" class="pdf-tool active">
+                        <h3>Text Tools</h3>
+                        <textarea id="textInput" placeholder="Enter your text here..." style="width: 100%; height: 120px; padding: 12px; background: #0a0a0a; border: 1px solid #2a2219; border-radius: 8px; color: #d4a574; resize: vertical; margin-bottom: 15px;"></textarea>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 15px;">
+                            <button class="action-btn" onclick="convertToUpperCase()">UPPERCASE</button>
+                            <button class="action-btn" onclick="convertToLowerCase()">lowercase</button>
+                            <button class="action-btn" onclick="capitalizeText()">Capitalize</button>
+                            <button class="action-btn" onclick="reverseText()">Reverse</button>
+                        </div>
+                        <div id="textStats" style="background: #0a0a0a; padding: 15px; border-radius: 8px; border: 1px solid #2a2219; color: #d4a574; font-weight: 600;">
+                            Words: 0 | Characters: 0 | Spaces: 0
+                        </div>
+                    </div>
+
+                    <!-- Unit Converter -->
+                    <div id="unit-converter" class="pdf-tool">
+                        <h3>Unit Converter</h3>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px;">Select Type:</label>
+                            <select id="unitType" onchange="updateUnitCategories()" style="width: 100%; margin-bottom: 15px;">
+                                <option value="length">Length</option>
+                                <option value="weight">Weight</option>
+                                <option value="temperature">Temperature</option>
+                                <option value="volume">Volume</option>
+                            </select>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div>
+                                <label>From:</label>
+                                <input type="number" id="fromValue" placeholder="0" style="width: 100%; margin-top: 5px;">
+                                <select id="fromUnit" style="width: 100%; margin-top: 5px;"></select>
+                            </div>
+                            <div>
+                                <label>To:</label>
+                                <input type="number" id="toValue" placeholder="Result" readonly style="width: 100%; margin-top: 5px;">
+                                <select id="toUnit" style="width: 100%; margin-top: 5px;"></select>
+                            </div>
+                        </div>
+                        <button class="action-btn" onclick="convertUnits()" style="width: 100%;">Convert</button>
+                    </div>
+
+                    <!-- Color Converter -->
+                    <div id="color-converter" class="pdf-tool">
+                        <h3>Color Converter</h3>
+                        <div style="margin-bottom: 20px;">
+                            <label>HEX Color:</label>
+                            <input type="text" id="hexInput" placeholder="#FF5733" maxlength="7" style="width: 100%; margin-top: 5px; margin-bottom: 15px;">
+                            <button class="action-btn" onclick="convertHexToRgb()">Convert HEX to RGB</button>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label>RGB Color:</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                                <input type="number" id="redValue" placeholder="Red" min="0" max="255">
+                                <input type="number" id="greenValue" placeholder="Green" min="0" max="255">
+                                <input type="number" id="blueValue" placeholder="Blue" min="0" max="255">
+                            </div>
+                            <button class="action-btn" onclick="convertRgbToHex()" style="width: 100%;">Convert RGB to HEX</button>
+                        </div>
+                        <div id="colorPreview" style="width: 100%; height: 120px; border-radius: 8px; border: 2px solid #d4a574; background: #ffffff; margin-top: 15px;"></div>
+                        <div id="colorValues" style="background: #0a0a0a; padding: 12px; border-radius: 8px; border: 1px solid #2a2219; color: #d4a574; font-weight: 600; margin-top: 10px; text-align: center;">HEX: #FFFFFF | RGB: (255, 255, 255)</div>
+                    </div>
+
+                    <!-- Color Identifier -->
+                    <div id="color-identifier" class="pdf-tool">
+                        <h3>Color Identifier</h3>
+                        <p style="color: #8b7355; font-size: 12px; margin-bottom: 15px;">Upload an image to identify dominant colors</p>
+                        <input type="file" id="colorImageFile" accept="image/*" onchange="loadImageForColorIdentifier(event)" style="margin-bottom: 15px;">
+                        <div id="colorImagePreview" class="pdf-preview" style="display:none; height: 250px; align-items: center; justify-content: center;"><img id="colorImg" style="max-width: 100%; max-height: 100%; border-radius: 8px;"></div>
+                        <button class="action-btn" onclick="identifyColors()" style="width: 100%; margin-top: 15px;">Identify Colors</button>
+                        <div id="colorPalette" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px;"></div>
+                    </div>
+
+                    <!-- QR Code Generator -->
+                    <div id="qr-generator" class="pdf-tool">
+                        <h3>QR Code Generator</h3>
+                        <input type="text" id="qrInput" placeholder="Enter text or URL..." style="width: 100%; margin-bottom: 15px;">
+                        <button class="action-btn" onclick="generateQRCode()" style="width: 100%; margin-bottom: 15px;">Generate QR Code</button>
+                        <div id="qrPreview" style="display: flex; justify-content: center; align-items: center; min-height: 300px; background: #0a0a0a; border: 1px solid #2a2219; border-radius: 8px; margin-bottom: 15px;"></div>
+                        <button class="action-btn" id="downloadQR" onclick="downloadQRCode()" style="width: 100%; display: none;">Download QR Code</button>
+                    </div>
+
+                    <!-- Image Compressor -->
+                    <div id="image-compressor" class="pdf-tool">
+                        <h3>Image Compressor</h3>
+                        <p style="color: #8b7355; font-size: 12px; margin-bottom: 15px;">Max file size: 200MB | Supported: JPG, PNG, WebP</p>
+                        <input type="file" id="compressImageFile" accept="image/*" onchange="loadImageForCompress(event)" style="margin-bottom: 15px;">
+                        <div id="compressImagePreview" class="pdf-preview" style="display:none; height: 250px; align-items: center; justify-content: center;"><img id="compressImg" style="max-width: 100%; max-height: 100%; border-radius: 8px;"></div>
+                        <div style="margin-top: 15px; margin-bottom: 15px;">
+                            <label>Compression Quality (1-100):</label>
+                            <input type="range" id="qualitySlider" min="1" max="100" value="80" style="width: 100%; margin-top: 5px;">
+                            <div style="color: #d4a574; font-weight: 600; margin-top: 5px;">Quality: <span id="qualityValue">80</span>%</div>
+                        </div>
+                        <button class="action-btn" onclick="compressImage()" style="width: 100%; margin-bottom: 10px;">Compress & Download</button>
+                        <div id="compressStats" style="background: #0a0a0a; padding: 12px; border-radius: 8px; border: 1px solid #2a2219; color: #d4a574; font-weight: 600; text-align: center; display: none;">Original: <span id="origSize">0</span>MB | Compressed: <span id="compSize">0</span>MB</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- CONTACT FOOTER -->
+        <footer class="contact-footer">
+            <div class="footer-content">
+                <h3>🤝 Need Something Else?</h3>
+                <p>Got an idea for a custom tool? We'd love to hear from you!</p>
+                <p style="font-size: 16px; font-weight: 700; margin: 10px 0;">
+                    📧 <a href="mailto:workforall110@gmail.com" style="color: #d4a574; text-decoration: none; cursor: pointer;">workforall110@gmail.com</a>
+                </p>
+                <p style="font-size: 12px; color: #8b7355; margin-top: 10px;">We'll get back to you with custom tool ideas!</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="calculator.js"></script>
+    <script src="pdf-tools.js"></script>
+    <script src="tools.js"></script>
+</body>
+</html>
